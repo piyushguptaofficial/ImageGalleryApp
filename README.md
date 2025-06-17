@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
+# Welcome to My Expo app 👋
 ## Get started
-
 1. Install dependencies
-
    ```bash
    npm install
    ```
@@ -28,7 +22,21 @@ A simple image gallery app built with **React Native**, **Expo Router**, and **T
 - Clean component structure
 - Built using Expo Router
 
-## 📸 Screenshots
+## 📸 FUTURE WORK ##
+✅ Design polish: Background color, shadow, rounded images, padding, and layout.
+
+✅ Navigation polish: Go back button on details page.
+
+✅ Fancy loader: Instead of default spinner, ek custom animation (Lottie, etc).
+
+✅ Fade in images: Using react-native-reanimated or expo-image.
+
+✅ Deploy to GitHub: Clean code, proper folder names, README.md.
+
+This was my first time working on Expo Router + React Native, aur maine yeh project pura scratch pe build kiya hai-woh bhi smjh ke, har steps har error ko fix karke, bina ready-made code copy kiye. 
+Abhi jada time nhi mila mujhe polish krne k liye kyuki isse phle mai react.js pe kaam kr rha tha uske projects bana rha tha 
+
+Aage Future mai iss project aur aacha upgrade karunga aur isme kuch naya feature add karunga.
 
 
 
