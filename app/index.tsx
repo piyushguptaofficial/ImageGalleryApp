@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+// app/index.tsx
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import Card from '../components/card';
 import { getImages } from '../utils/api';
 
@@ -10,23 +12,46 @@ type ImageItem = {
 };
 
 export default function Home() {
-  const [images, setImages] = useState<ImageItem[]>([]); // Loadind state
+  const [images, setImages] = useState<ImageItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadImages = async () => {
+    try {
+      // STEP 1: Try to get from storage
+      const cachedData = await AsyncStorage.getItem('cachedImages');
+
+      if (cachedData !== null) {
+        setImages(JSON.parse(cachedData));
+        console.log("Loaded from cache ✅");
+      }
+
+      // STEP 2: Fetch latest from API
+      const freshImages = await getImages();
+      setImages(freshImages);
+      await AsyncStorage.setItem('cachedImages', JSON.stringify(freshImages));
+      console.log("Fetched from API and cached 🔁");
+
+    } catch (error) {
+      console.error("Error loading images", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const data = await getImages(); // Fetching data from API
-      setImages(data); // Update the state with the fetched data
-    };
-    fetchImages(); // Call the function to fetch data
+    loadImages();
   }, []);
 
+  if (loading) {
+    return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center' }} />;
+  }
+
   return (
-    // Container for the list
-    <View style={{ flex: 1, padding: 10 }}>  
-      <FlatList 
+    <View style={{ flex: 1, padding: 10 }}>
+      <FlatList
         data={images}
-        keyExtractor={(item) => item.id.toString()} // Extracting the id from each item
-        renderItem={({ item }) => <Card item={item} />} // Rendering each item as a Card component
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <Card item={item} />}
       />
     </View>
   );

@@ -1,14 +1,14 @@
-// utils/api.ts
-type ImageItem = {
-  id: number;
-  title: string;
-  url: string;
-};
-
-export const getImages = async (): Promise<ImageItem[]> => {
-  return [
-    { id: 1, title: 'Beautiful Mountain', url: 'https://picsum.photos/id/1011/500/300' },
-    { id: 2, title: 'Lake View', url: 'https://picsum.photos/id/1020/500/300' },
-    { id: 3, title: 'Sunset Bliss', url: 'https://picsum.photos/id/1025/500/300' },
-  ];
+export const getImages = async () => {
+  try {
+    const res = await fetch('https://api.flickr.com/services/rest/?method=flickr.photos.getRecent&per_page=20&page=1&api_key=6f102c62f41998d151e5a1b48713cf13&format=json&nojsoncallback=1&extras=url_s');
+    const data = await res.json();
+    return data.photos.photo.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      url: item.url_s,
+    }));
+  } catch (error) {
+    console.error("API error:", error);
+    return [];
+  }
 };
