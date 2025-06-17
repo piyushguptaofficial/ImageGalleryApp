@@ -1,0 +1,14 @@
+✅ Design polish: Background color, shadow, rounded images, padding, and layout.
+
+✅ Navigation polish: Go back button on details page.
+
+✅ Fancy loader: Instead of default spinner, ek custom animation (Lottie, etc).
+
+✅ Fade in images: Using react-native-reanimated or expo-image.
+
+✅ Deploy to GitHub: Clean code, proper folder names, README.md.
+
+This was my first time working on Expo Router + React Native, aur maine yeh project pura scratch pe build kiya hai-woh bhi smjh ke, har steps har error ko fix karke, bina ready-made code copy kiye. 
+Abhi jada time nhi mila mujhe polish krne k liye kyuki isse phle mai react.js pe kaam kr rha tha uske projects bana rha tha 
+
+Aage Future mai iss project aur aacha upgrade karunga aur isme kuch naya feature add karunga.
