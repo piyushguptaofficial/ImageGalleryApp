@@ -21,7 +21,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.narendraobama.ImageGalleryApp"
     },
     "web": {
       "bundler": "metro",
@@ -43,6 +44,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "13eed03b-ae5a-413d-b012-a3a3df77580d"
+      }
+    },
+    "owner": "narendraobama"
   }
 }
