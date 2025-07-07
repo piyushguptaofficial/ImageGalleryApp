@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import Card from '../components/Card';
@@ -81,45 +83,71 @@ export default function Home() {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
-      {/* Go to drawer search */}
-      <Link href="/drawer/search" asChild>
-        <TouchableOpacity>
-          <Text style={{ fontSize: 18, color: 'blue', marginBottom: 10 }}>🔍 Go to Search</Text>
-        </TouchableOpacity>
-      </Link>
+    <LinearGradient
+      colors={['#ffe359', '#ffa752']}
+      style={styles.background}
+    >
+      <View style={styles.container}>
+        {/* Go to drawer search */}
+        <Link href="/drawer/search" asChild>
+          <TouchableOpacity>
+            <Text style={styles.link}>🗄️ CABINE</Text>
+          </TouchableOpacity>
+        </Link>
 
-      {/* Local Search Bar */}
-      <SearchBar
-        value={query}
-        onChange={setQuery}
-        onSubmit={handleSearch}
-      />
+        {/* Local Search Bar */}
+        <SearchBar
+          value={query}
+          onChange={setQuery}
+          onSubmit={handleSearch}
+        />
 
-      {/* Image Grid */}
-      <FlatList
-        data={images}
-        keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
-        renderItem={({ item }) => <Card item={item} />}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.5}
-        numColumns={2}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-        ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
-      />
+        {/* Image Grid */}
+        <FlatList
+          data={images}
+          keyExtractor={(item, index) =>
+            item.id ? item.id.toString() : index.toString()
+          }
+          renderItem={({ item }) => (
+            <Card item={{ ...item, id: item.id.toString() }} />
+          )}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          ListFooterComponent={
+            loading ? <ActivityIndicator size="large" /> : null
+          }
+        />
 
-      {/* Snackbar on failure */}
-      <Snackbar
-        visible={snackbarVisible}
-        onDismiss={() => setSnackbarVisible(false)}
-        action={{
-          label: 'RETRY',
-          onPress: () => fetchImages(page, query),
-        }}
-        duration={4000}
-      >
-        Network error. Please try again.
-      </Snackbar>
-    </View>
+        {/* Snackbar on failure */}
+        <Snackbar
+          visible={snackbarVisible}
+          onDismiss={() => setSnackbarVisible(false)}
+          action={{
+            label: 'RETRY',
+            onPress: () => fetchImages(page, query),
+          }}
+          duration={4000}
+        >
+          Network error. Please try again.
+        </Snackbar>
+      </View>
+    </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  link: {
+    fontSize: 18,
+    color: 'blue',
+    marginBottom: 10,
+  },
+});

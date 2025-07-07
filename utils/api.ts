@@ -1,6 +1,6 @@
 // utils/api.ts
 
-// const API_KEY = "6f102c62f41998d151e5a1b48713cf13";
+// const api_key = "6f102c62f41998d151e5a1b48713cf13";
 // utils/api.ts
 
 export const getImages = async (page = 1, query = '') => {

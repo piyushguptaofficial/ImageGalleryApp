@@ -1,6 +1,4 @@
-// app/drawer/search.tsx
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -10,14 +8,14 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View
-} from 'react-native';
-import { Snackbar } from 'react-native-paper';
-import Card from '../../components/Card';
-import CategoryTabs from '../../components/CategoryTabs'; // Category tabs
-import { getImages } from '../../utils/api';
+} from 'react-native'
+import { Snackbar } from 'react-native-paper'
+import Card from '../../components/Card'
+import CategoryTabs from '../../components/CategoryTabs'
+import { getImages } from '../../utils/api'
 
 type ImageItem = {
-  id: number;
+  id: string;
   title: string;
   url: string;
 };
@@ -30,16 +28,17 @@ export default function SearchPage() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const handleSearch = async (text = query) => {
-
-    console.log("Searching for:", text); // checkpoint
-
-
+    console.log("Searching for:", text);
     if (!text.trim()) return;
 
     setLoading(true);
     try {
       const results = await getImages(1, text);
-      setImages(results);
+      const formatted = results.map((item: any) => ({
+        ...item,
+        id: item.id.toString(), // Ensure ID is a string
+      }));
+      setImages(formatted);
       setSnackbarVisible(false);
     } catch (error) {
       console.error('Search Error:', error);
@@ -50,57 +49,42 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
-    handleSearch(category); // Load trending images by default
+    handleSearch(category);
   }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+        
         {/* Category Tabs */}
         <CategoryTabs
           selected={category}
           onSelect={(cat) => {
             setCategory(cat);
-            setQuery(cat); // also update input field
+            setQuery(cat);
             handleSearch(cat);
           }}
         />
 
-        {/* Search Bar */}
+        {/* Search Input */}
         <TextInput
           placeholder="Search image..."
           value={query}
           onChangeText={setQuery}
-          onSubmitEditing={() =>{
-            console.log("direct TextInput search:", query);
-          handleSearch(query);}}
+          onSubmitEditing={() => handleSearch(query)}
           style={styles.input}
         />
-
-
-        {/* <SearchBar
-        value={query}
-        onChange={setQuery}
-        onSubmit={() => {
-          console.log("🟢 Searching for (via onSubmit):", query); // ✅ Checkpoint
-          handleSearch(query);
-        
-        
-  }}
-/> */}
-
 
         {/* Image List */}
         <FlatList
           data={images}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Card item={item} />}
           numColumns={2}
           columnWrapperStyle={{ justifyContent: 'space-between' }}
+          contentContainerStyle={{ paddingBottom: 16 }}
           ListEmptyComponent={
-            !loading
-              ? <Text style={styles.noResult}>No results found 🧐</Text>
-              : null
+            !loading ? <Text style={styles.noResult}>No results found 🧐</Text> : null
           }
           ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
         />
